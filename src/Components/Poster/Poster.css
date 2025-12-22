@@ -1,0 +1,45 @@
+.poster {
+  width: 900px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.poster-title {
+  text-align: left;
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.poster-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.poster-image:hover {
+  transform: scale(1.02);
+}
+
+.poster-footer {
+  text-align: right;
+  margin-top: 10px;
+}
+
+.poster-button {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid black;
+  border-radius: 20px;
+  font-size: 14px;
+  text-decoration: none;
+  color: black;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.poster-button:hover {
+  background: black;
+  color: white;
+}

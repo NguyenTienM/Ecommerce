@@ -1,0 +1,32 @@
+.order-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.order-item img {
+  width: 100px;
+  height: auto;
+  border-radius: 6px;
+  margin-right: 12px;
+  object-fit: cover;
+}
+.info {
+  flex: 1;
+}
+.color {
+  text-transform: lowercase;
+}
+.name {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.quantity {
+  opacity: 0.8;
+}
+
+.price {
+  color: #e93516;
+  font-weight: 500;
+}

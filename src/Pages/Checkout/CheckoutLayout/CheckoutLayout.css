@@ -1,0 +1,24 @@
+.checkout-page {
+  display: flex;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 20px;
+}
+.checkout-section {
+  border: 1px solid #ddd;
+  padding: 16px;
+  margin-bottom: 12px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.checkout-section.active {
+  opacity: 1;
+  pointer-events: auto;
+  background: #fff;
+}
+
+.order-details span {
+  font-size: 18px;
+}

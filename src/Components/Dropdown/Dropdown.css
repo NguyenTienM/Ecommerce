@@ -1,0 +1,43 @@
+.user-dropdown {
+  background: white;
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  padding: 8px;
+  min-width: 220px;
+  list-style: none; /* Ensure no bullets */
+}
+
+.user-dropdown li {
+  font-size: 15px;
+  list-style-type: none;
+  padding: 0; /* Remove padding from li, control via a */
+  margin: 2px 0;
+  border-radius: 4px;
+}
+
+.user-dropdown li:hover {
+  background-color: var(--bg-secondary);
+}
+
+.user-dropdown li a, 
+.user-dropdown li .dropdown-logout {
+  text-decoration: none;
+  color: var(--text-main);
+  width: 100%;
+  display: block;
+  padding: 10px 15px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+}
+
+.user-dropdown li:hover a,
+.user-dropdown li:hover .dropdown-logout {
+  color: var(--primary-color);
+}

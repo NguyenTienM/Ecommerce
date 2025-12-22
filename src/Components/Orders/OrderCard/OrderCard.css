@@ -1,0 +1,67 @@
+.order-card {
+  border: 1px solid #eee;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background: #fff;
+  transition: box-shadow 0.2s ease;
+  font-size: 20px;
+}
+
+.order-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* header chứa mã đơn + trạng thái */
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.order-status {
+  color: #e93516;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* main card */
+
+/* footer chứa tổng tiền + nút hành động */
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 10px;
+  font-size: 20px;
+}
+
+.order-footer p {
+  margin: 0;
+  font-weight: 500;
+}
+
+.cancel-btn {
+  background: #fff;
+  border: 1px solid #e93516;
+  color: #e93516;
+  min-height: 40px;
+  min-width: 150px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #e93516;
+  color: #fff;
+}
+.order-items a {
+  text-decoration: none;
+  color: inherit;
+}

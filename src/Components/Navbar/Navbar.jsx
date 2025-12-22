@@ -1,39 +1,127 @@
-import React, { useContext, useRef, useState } from 'react'
-import './Navbar.css'
-import logo from '../Assets/logo.png';
-import cart_icon from '../Assets/cart_icon.png';
-import {Link}  from 'react-router-dom';
-import { ShopContext } from '../../Context/ShopContext';
-import nav_dropdown from '../Assets/nav_dropdown.png'
+import React, { useContext, useRef, useState } from "react";
+import "./Navbar.css";
+import logo from "../Assets/mess.png";
+import cart_icon from "../Assets/cart_icon.png";
+import { Link } from "react-router-dom";
+import { ShopContext } from "../../Context/ShopContext";
+import nav_dropdown from "../Assets/nav_dropdown.png";
+import { AuthContext } from "../../Context/AuthContext";
+import { FaUserCircle } from "react-icons/fa";
+import Dropdown from "../Dropdown/Dropdown";
+import MegaMenu from "../MegaMenu/MegaMenu";
+import { useNavigate } from "react-router-dom";
 export const Navbar = () => {
-
-  const [menu,setMenu] = useState("shop");
-  const {getTotalCartItems} = useContext(ShopContext);
+  const [menu, setMenu] = useState("shop");
+  const [activeMega, setActiveMega] = useState(null);
+  const { getTotalCartItems } = useContext(ShopContext);
+  const { user } = useContext(AuthContext);
+  const nav = useNavigate();
   const menuRef = useRef();
-  const dropdown_toggle =(e)=>{
-      menuRef.current.classList.toggle('nav-menu-visible');
-      e.target.classList.toggle('open');
-  }
+
+  const dropdown_toggle = (e) => {
+    menuRef.current.classList.toggle("nav-menu-visible");
+    e.target.classList.toggle("open");
+  };
+
+  const handleMouseEnter = (type) => {
+    setActiveMega(type);
+  };
+
+  const handleMouseLeave = () => {
+    setActiveMega(null);
+  };
+
   return (
-    <div className='navbar'>
-      <div className='nav-logo'>
-        <img src={logo} alt="" />
-        <p>SHOPPER</p>
+    <>
+      <div className="navbar">
+        <div className="nav-logo" onClick={() => nav("/")} style={{ cursor: "pointer" }}>
+          <img src={logo} alt="" />
+          <p>Uniqlo</p>
+        </div>
+        <img
+          className="nav-dropdown"
+          onClick={dropdown_toggle}
+          src={nav_dropdown}
+          alt=""
+        />
+        <ul ref={menuRef} className="nav-menu">
+          <li
+            className="nav-home"
+            onMouseEnter={() => handleMouseEnter("shop")}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => {
+              setMenu("shop");
+              nav(`/`);
+            }}
+          >
+            <Link style={{ textDecoration: "none" }} to="/">
+              Trang Chủ
+            </Link>
+            {menu === "shop" ? <hr /> : <></>}
+          </li>
+          <li
+            onMouseEnter={() => handleMouseEnter("mens")}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => {
+              setMenu("mens");
+              nav("/mens");
+            }}
+          >
+            <Link style={{ textDecoration: "none" }} to="/mens">
+              Nam
+            </Link>
+            {menu === "mens" ? <hr /> : <></>}
+            {activeMega === "mens" && <MegaMenu type="men" />}
+          </li>
+          <li
+            onMouseEnter={() => handleMouseEnter("womens")}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => {
+              setMenu("womens");
+              nav("/womens");
+            }}
+          >
+            <Link style={{ textDecoration: "none" }} to="/womens">
+              Nữ
+            </Link>
+            {menu === "womens" ? <hr /> : <></>}
+            {activeMega === "womens" && <MegaMenu type="women" />}
+          </li>
+          <li
+            onMouseEnter={() => handleMouseEnter("kids")}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => {
+              setMenu("kids");
+              nav("/kids");
+            }}
+          >
+            <Link style={{ textDecoration: "none" }} to="/kids">
+              Trẻ Em
+            </Link>
+            {menu === "kids" ? <hr /> : <></>}
+            {activeMega === "kids" && <MegaMenu type="kids" />}
+          </li>
+        </ul>
+        <div className="nav-login-cart">
+          {user ? (
+            <div className="nav-infor">
+              <FaUserCircle />
+              <span>{user.name}</span>
+              <Dropdown />
+            </div>
+          ) : (
+            <Link to="/login">
+              <button>Đăng Nhập</button>
+            </Link>
+          )}
+          <Link to="/cart" className="nav-cart-link">
+            <img src={cart_icon} alt="" />
+            <div className="nav-cart-count">{getTotalCartItems()}</div>
+          </Link>
+        </div>
       </div>
-      <img  className='nav-dropdown'onClick={dropdown_toggle} src={nav_dropdown}  alt="" />
-      <ul  ref={menuRef} className='nav-menu'>
-        <li onClick={()=>{setMenu("shop")}}><Link style={{textDecoration:'none'}} to='/'>Shop</Link>{menu==="shop"?<hr/>:<></>}</li>
-        <li onClick={()=>{setMenu("mens")}}><Link style={{textDecoration:'none'}} to='/mens'>Men</Link>{menu==="mens"?<hr/>:<></>}</li>
-        <li onClick={()=>{setMenu("womens")}}><Link style={{textDecoration:'none'}} to='/womens'>Women</Link>{menu==="womens"?<hr/>:<></>}</li>
-        <li onClick={()=>{setMenu("kids")}}><Link style={{textDecoration:'none'}} to='/kids'>Kid</Link>{menu==="kids"?<hr/>:<></>}</li>
-      </ul>
-      <div className="nav-login-cart">
-        {localStorage.getItem('auth-token')?<button onClick={()=>{localStorage.removeItem('auth-token');window.location.replace('/')}}>Logout</button>:
-        <Link to='/login'><button>Login</button> </Link>}
-        <Link to='/cart'><img src={cart_icon} alt="" /></Link>
-        
-        <div className="nav-cart-count">{getTotalCartItems()}</div>
-      </div>
-    </div>
-  )
-}
+      {/* Overlay background when mega menu is active (only for category menus) */}
+      {activeMega && activeMega !== "shop" && <div className="nav-overlay" onMouseEnter={handleMouseLeave}></div>}
+    </>
+  );
+};

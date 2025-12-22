@@ -7,6 +7,18 @@
   pointer-events: none;
 }
 
+.page-content {
+  padding-top: 70px; /* Match Navbar height */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure footer stays at bottom */
+.page-content > div:last-child {
+  margin-top: auto;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
