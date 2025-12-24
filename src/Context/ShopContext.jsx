@@ -1,12 +1,14 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState, useContext } from "react";
 import { cartService } from "../services/cartService";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { AuthContext } from "./AuthContext";
 
 export const ShopContext = createContext(null);
 
 const ShopContextProvider = (props) => {
   const navigate = useNavigate();
+  const { accessToken } = useContext(AuthContext);
   const [all_product, setAll_Product] = useState([]);
   const [cartItems, setCartItems] = useState([]);
 
@@ -23,7 +25,7 @@ const ShopContextProvider = (props) => {
 
   // Hàm fetch cart
   const fetchCart = async () => {
-    if (localStorage.getItem("auth-token")) {
+    if (accessToken) {
       try {
         const res = await cartService.getCart();
         setCartItems(res);
@@ -57,8 +59,7 @@ const ShopContextProvider = (props) => {
 
   // addToCart
   const addToCart = async (product) => {
-    const token = localStorage.getItem("auth-token");
-    if (!token) {
+    if (!accessToken) {
       toast.error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
       navigate("/login");
       return;
@@ -111,7 +112,7 @@ const ShopContextProvider = (props) => {
   const removeFromCart = async (cartItemId) => {
     try {
       // Gọi backend trước
-      if (localStorage.getItem("auth-token")) {
+      if (accessToken) {
         await cartService.removeFormCart(cartItemId);
       }
       
@@ -133,7 +134,7 @@ const ShopContextProvider = (props) => {
     try {
       setCartItems([]); // reset frontend
 
-      if (localStorage.getItem("auth-token")) {
+      if (accessToken) {
         await cartService.clearCart();
       }
       toast.success("Đã xóa toàn bộ giỏ hàng");
@@ -187,7 +188,7 @@ const ShopContextProvider = (props) => {
       );
 
       // Gửi về backend
-      if (localStorage.getItem("auth-token")) {
+      if (accessToken) {
         await cartService.updateCartQuantity(cartItemId, newQuantity);
       }
 
@@ -197,7 +198,7 @@ const ShopContextProvider = (props) => {
       toast.error("Có lỗi xảy ra khi cập nhật số lượng");
       
       // Reload lại giỏ hàng nếu có lỗi
-      if (localStorage.getItem("auth-token")) {
+      if (accessToken) {
         const updatedCart = await cartService.getCart();
         setCartItems(updatedCart);
       }

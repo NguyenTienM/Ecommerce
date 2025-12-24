@@ -7,7 +7,7 @@ const OrderCard = ({ order }) => {
   return (
     <div className="order-card">
       <div className="order-header">
-        <span>Mã đơn: {order._id}</span>
+        <span>Mã đơn: {order.orderCode}</span>
         <span className="order-status">{order.status}</span>
       </div>
 
@@ -30,7 +30,7 @@ const OrderCard = ({ order }) => {
         </div>
 
         {order.status === "pending" && (
-          <button className="cancel-btn">Hủy đơn</button>
+          <button className="cancel-btn-order">Hủy đơn</button>
         )}
       </div>
     </div>

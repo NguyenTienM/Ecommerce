@@ -18,12 +18,13 @@
 }
 
 .cart-empty {
-  margin-top: 50px;
   display: flex;
-  gap: 20px;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
+  min-height: 50vh;
+  gap: 20px;
 }
 
 .cart-container {

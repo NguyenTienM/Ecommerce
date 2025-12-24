@@ -5,39 +5,21 @@ export const cartService = {
     return res.data;
   },
   addToCart: async (product) => {
-    await httpClient.post("/addtocart", product, {
-      headers: { "auth-token": localStorage.getItem("auth-token") },
-    });
+    await httpClient.post("/addtocart", product);
   },
 
   getCart: async () => {
-    const response = await httpClient.post(
-      "/getcart",
-      {},
-      { headers: { "auth-token": localStorage.getItem("auth-token") } }
-    );
+    const response = await httpClient.post("/getcart", {});
     return response.data;
   },
   removeFormCart: async (itemId) => {
-    await httpClient.post(
-      "/removefromcart",
-      { itemId },
-      { headers: { "auth-token": localStorage.getItem("auth-token") } }
-    );
+    await httpClient.post("/removefromcart", { itemId });
   },
   clearCart: async () => {
-    await httpClient.post(
-      "/clearcart",
-      {},
-      { headers: { "auth-token": localStorage.getItem("auth-token") } }
-    );
+    await httpClient.post("/clearcart", {});
   },
   
   updateCartQuantity: async (itemId, quantity) => {
-    await httpClient.post(
-      "/updatecart",
-      { itemId, quantity },
-      { headers: { "auth-token": localStorage.getItem("auth-token") } }
-    );
+    await httpClient.post("/updatecart", { itemId, quantity });
   },
 };

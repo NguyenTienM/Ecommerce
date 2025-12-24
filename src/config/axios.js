@@ -68,9 +68,15 @@ httpClient.interceptors.response.use(
         }
       } catch (refreshError) {
         // Refresh token hết hạn hoặc invalid
-        localStorage.clear();
+        console.log("❌ Refresh token failed:", refreshError.message);
+        
         globalAccessToken = null;
-        window.location.href = "/login";
+        
+        // ✅ Chỉ redirect nếu KHÔNG phải đang ở login page
+        if (!window.location.pathname.includes('/login')) {
+          window.location.href = "/login";
+        }
+        
         return Promise.reject(refreshError);
       }
     }

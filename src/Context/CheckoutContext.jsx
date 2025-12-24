@@ -1,11 +1,13 @@
 import React, { createContext, useState, useContext } from "react";
 import { ShopContext } from "./ShopContext";
 import { paymentService } from "../services/paymentService";
+import { AuthContext } from "./AuthContext";
 
 export const CheckoutContext = createContext();
 
 export const CheckoutContextProvider = ({ children }) => {
   const { cartItems, clearCart, getTotalCartAmount } = useContext(ShopContext);
+  const { accessToken } = useContext(AuthContext);
 
   const [checkoutData, setCheckoutData] = useState({
     shippingAddress: null,
@@ -40,8 +42,7 @@ export const CheckoutContextProvider = ({ children }) => {
   // 💳 Hàm đặt hàng
   // -----------------------------
   const placeOrder = async () => {
-    const token = localStorage.getItem("auth-token");
-    if (!token) return alert("Vui lòng đăng nhập để đặt hàng");
+    if (!accessToken) return alert("Vui lòng đăng nhập để đặt hàng");
     if (!checkoutData.shippingAddress)
       return alert("Vui lòng chọn địa chỉ giao hàng");
     if (!cartItems?.length) return alert("Giỏ hàng đang trống");
@@ -54,7 +55,7 @@ export const CheckoutContextProvider = ({ children }) => {
     const payload = {
       shippingAddress,
       products: cartItems.map((item) => ({
-        productId: item._id,
+        productId: item.productId,
         name: item.name,
         color: item.color,
         size: item.size,
@@ -74,27 +75,47 @@ export const CheckoutContextProvider = ({ children }) => {
       switch (checkoutData.paymentMethod) {
         case "cod": {
           res = await paymentService.codPayment(payload);
-          alert("Đặt hàng thành công! Thanh toán khi nhận hàng.");
-          clearCart();
-          break;
+          if (res.success) {
+            clearCart();
+            return {
+              success: true,
+              order: res.order,
+              orderId: res.orderId,
+              orderCode: res.order?.orderCode || res.orderId,
+            };
+          } else {
+            return {
+              success: false,
+              message: res.message || "Đặt hàng thất bại",
+            };
+          }
         }
 
         case "momo": {
           res = await paymentService.momoPayment(payload);
           if (res?.payUrl) {
-            window.location.href = res.payUrl; // Chuyển hướng sang MoMo
+            window.location.href = res.payUrl;
+            return { success: true, payUrl: res.payUrl };
           } else {
-            alert("Không tạo được link thanh toán MoMo!");
+            return {
+              success: false,
+              message: "Không tạo được link thanh toán MoMo!",
+            };
           }
-          break;
         }
 
         default:
-          alert("Phương thức thanh toán không hợp lệ!");
+          return {
+            success: false,
+            message: "Phương thức thanh toán không hợp lệ!",
+          };
       }
     } catch (error) {
       console.error("🚨 Lỗi khi xử lý thanh toán:", error);
-      alert("Không thể tạo đơn hàng!");
+      return {
+        success: false,
+        message: error.message || "Không thể tạo đơn hàng!",
+      };
     }
   };
 

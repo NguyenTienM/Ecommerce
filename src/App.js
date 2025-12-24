@@ -12,6 +12,7 @@ import AccountLayout from "./Pages/Layout/AccountLayout";
 import Profile from "./Pages/Account/Profile";
 import OrdersPage from "./Pages/Orders/OrdersPage";
 import OrderDetail from "./Pages/Orders/OrderDetails/OrderDetail";
+import AddressManagement from "./Pages/Account/AddressManagement/AddressManagement";
 import ChatAi from "./Components/ChatAi/ChatAi";
 import Women from "./Pages/Category/Women/Women";
 import Kid from "./Pages/Category/Kid/Kid";
@@ -46,6 +47,7 @@ function App() {
           <Route path="/login" element={<LoginSignup />} />
           <Route path="/user" element={<AccountLayout />}>
             <Route path="account/profile" element={<Profile />} />
+            <Route path="account/address" element={<AddressManagement />} />
             <Route path="orders" element={<OrdersPage />} />
             <Route path="orders/:orderId" element={<OrderDetail />} />
           </Route>

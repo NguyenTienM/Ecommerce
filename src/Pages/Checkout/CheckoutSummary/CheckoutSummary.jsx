@@ -2,13 +2,16 @@ import React, { useContext, useState } from "react";
 import { CheckoutContext } from "../../../Context/CheckoutContext";
 import { useNavigate } from "react-router-dom";
 import { ShopContext } from "../../../Context/ShopContext";
-import "./CheckoutSummary.css"; // 👈 import CSS
+import OrderSuccessModal from "../../../Components/OrderSuccessModal/OrderSuccessModal";
+import "./CheckoutSummary.css";
 
 const CheckoutSummary = () => {
   const { checkoutData, placeOrder } = useContext(CheckoutContext);
   const { cartItems } = useContext(ShopContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [orderCode, setOrderCode] = useState("");
   const navigate = useNavigate();
 
   const handlePlaceOrder = async () => {
@@ -18,9 +21,11 @@ const CheckoutSummary = () => {
     try {
       const result = await placeOrder();
       if (result.success) {
-        navigate("/checkout/success");
+        // Show success modal with order code
+        setOrderCode(result.orderCode || result.order?.orderCode || result.orderId);
+        setShowSuccessModal(true);
       } else {
-        setError("Đặt hàng thất bại!");
+        setError(result.message || "Đặt hàng thất bại!");
       }
     } catch (err) {
       setError("Có lỗi xảy ra: " + err.message);
@@ -28,7 +33,42 @@ const CheckoutSummary = () => {
       setLoading(false);
     }
   };
+
+  const handleCloseModal = () => {
+    setShowSuccessModal(false);
+    navigate("/user/orders");
+  };
+
   console.log("Checkout Data:", checkoutData.shippingAddress);
+
+  // Redirect to delivery page if no shipping address selected
+  if (!checkoutData.shippingAddress) {
+    return (
+      <div className="checkout-summary">
+        <h1>3.Đơn hàng của bạn</h1>
+        <div className="checkout-details">
+          <p style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
+            Vui lòng chọn địa chỉ giao hàng trước.
+          </p>
+          <button 
+            onClick={() => navigate('/checkout/delivery')}
+            style={{ 
+              margin: '20px auto', 
+              display: 'block',
+              padding: '12px 24px',
+              background: 'var(--primary-color)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer'
+            }}
+          >
+            Chọn địa chỉ giao hàng
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="checkout-summary">
@@ -101,6 +141,13 @@ const CheckoutSummary = () => {
       <button onClick={handlePlaceOrder} disabled={loading}>
         {loading ? "Đang xử lý..." : "Đặt hàng"}
       </button>
+
+      {/* Success Modal */}
+      <OrderSuccessModal
+        show={showSuccessModal}
+        onClose={handleCloseModal}
+        orderCode={orderCode}
+      />
     </div>
   );
 };

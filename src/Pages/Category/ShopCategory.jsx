@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./ShopCategory.css";
-import { Item } from "../../Components/Item/Item";
+import  {Item } from "../../Components/Item/Item";
 
 // Banner riêng theo category + gender + type
 const banners = {

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import "./CheckoutDelivery.css";
 import { useNavigate } from "react-router-dom";
 import { CheckoutContext } from "../../../Context/CheckoutContext";
+import { httpClient } from "../../../config/axios";
 
 const CheckoutDelivery = () => {
   const [selectedMethod, setSelectedMethod] = useState("home"); // "home" | "store"
@@ -12,23 +13,14 @@ const CheckoutDelivery = () => {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        const token = localStorage.getItem("auth-token"); // 👈 bạn phải lưu token sau khi login
-        const response = await fetch("http://localhost:4000/getAdress", {
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": token, // 👈 gửi token lên backend
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Không thể tải địa chỉ");
-        }
-
-        const data = await response.json();
-        setAddress(data);
-        const defaultAddress = data.find((addr) => addr.isDefault);
-        if (defaultAddress) {
-          setSelectedId(defaultAddress._id);
+        const response = await httpClient.get("/getAdress");
+        
+        if (response.data) {
+          setAddress(response.data);
+          const defaultAddress = response.data.find((addr) => addr.isDefault);
+          if (defaultAddress) {
+            setSelectedId(defaultAddress._id);
+          }
         }
       } catch (err) {
         console.error(err);

@@ -41,12 +41,11 @@ export const AuthContextProvider = ({ children }) => {
     try {
       await userService.logout();
       setUser(null);
-      setAccessToken(null); // ✅ Xóa khỏi memory
+      setAccessToken(null);
       toast.info("Đã đăng xuất");
       window.location.replace("/");
     } catch (error) {
       console.error("Logout error:", error);
-      localStorage.clear();
       setUser(null);
       setAccessToken(null);
       window.location.replace("/");
@@ -71,16 +70,17 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const initAuth = async () => {
       try {
-        // Gọi refresh để lấy access token mới từ cookie
+        // Gọi refresh để lấy access token mới từ httpOnly cookie
         const newAccessToken = await userService.refreshToken();
         setAccessToken(newAccessToken);
         
         // Fetch user info với token mới
         const me = await userService.getMe(newAccessToken);
         setUser(me);
-        setLoading(false);
       } catch (error) {
         // Không có refresh token hoặc hết hạn
+        console.log("No valid refresh token");
+      } finally {
         setLoading(false);
       }
     };

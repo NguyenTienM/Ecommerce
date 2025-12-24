@@ -11,6 +11,8 @@ const OrderDetail = () => {
   const [infor, setInfor] = useState({});
   const [total, setTotal] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [orderCode, setOrderCode] = useState("");
+   
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -22,6 +24,7 @@ const OrderDetail = () => {
           setProduct(res.order.products);
           setTotal(res.order.amount);
           setPaymentMethod(res.order.paymentMethod);
+          setOrderCode(res.order.orderCode);
         }
       } catch (err) {
         console.error(err);
@@ -32,7 +35,7 @@ const OrderDetail = () => {
 
   return (
     <div className="order-detail">
-      <h1>OrderID:{orderId}</h1>
+      <h1>Mã đơn hàng: {orderCode}</h1>
       <Address orderInfo={infor} />
       <hr />
       {product.map((item) => {

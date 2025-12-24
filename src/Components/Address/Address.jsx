@@ -9,7 +9,7 @@ const Address = ({ orderInfo }) => {
         <p className="phone">Số điện thoại: {orderInfo.phone}</p>
         <p className="address-text">
           Địa chỉ:
-          {orderInfo.detailAddress}, {orderInfo.district}, {orderInfo.province}
+           {orderInfo.detailAddress}, {orderInfo.district}, {orderInfo.province}
         </p>
       </div>
     </div>
