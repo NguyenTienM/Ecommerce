@@ -33,7 +33,7 @@ export const Item = ({ product }) => {
           ))}
         </div>
 
-        {/* Giới tính + Size */}
+        {/* Giới tính + Category + Type */}
         <div className="product-meta">
           <span className="gender">
             {gender === 'male' ? 'Nam' : 
@@ -41,6 +41,12 @@ export const Item = ({ product }) => {
              gender === 'unisex' ? 'Unisex' : 
              'Trẻ em'}
           </span>
+          {/* {product.categoryId?.name && (
+            <span className="category"> • {product.categoryId.name}</span>
+          )}
+          {product.productTypeId?.name && (
+            <span className="type"> • {product.productTypeId.name}</span>
+          )} */}
           {allSizes.length > 0 && (
             <span className="size">
               {allSizes[0]}-{allSizes[allSizes.length - 1]}

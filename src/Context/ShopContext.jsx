@@ -11,6 +11,7 @@ const ShopContextProvider = (props) => {
   const { accessToken } = useContext(AuthContext);
   const [all_product, setAll_Product] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [cartLoading, setCartLoading] = useState(true); // ✅ Thêm loading state
 
   // Hàm fetch products (có thể gọi lại để refresh)
   const fetchProducts = async () => {
@@ -25,20 +26,30 @@ const ShopContextProvider = (props) => {
 
   // Hàm fetch cart
   const fetchCart = async () => {
+    console.log("🔍 Fetching cart...");
+    console.log("  accessToken:", accessToken ? "✅ exists" : "❌ missing");
+    
     if (accessToken) {
+      setCartLoading(true);
       try {
         const res = await cartService.getCart();
+        console.log("  ✅ Cart fetched from backend:", res);
+        console.log("  Cart items count:", res?.length || 0);
         setCartItems(res);
       } catch (error) {
-        console.error("❌ Error fetching cart:", error);
+        console.error("  ❌ Error fetching cart:", error);
+      } finally {
+        setCartLoading(false);
       }
+    } else {
+      console.log("  ⚠️ No accessToken, skipping cart fetch");
+      setCartLoading(false);
     }
   };
 
-  // Initial load
+  // Initial load - chỉ fetch products
   useEffect(() => {
     fetchProducts();
-    fetchCart();
   }, []);
 
   // Auto-refresh stock mỗi 30 giây
@@ -51,6 +62,14 @@ const ShopContextProvider = (props) => {
     return () => clearInterval(intervalId);
   }, []);
 
+  // ✅ Fetch cart khi accessToken có sẵn (sau khi AuthContext refresh token)
+  useEffect(() => {
+    if (accessToken) {
+      console.log("🔑 AccessToken available, fetching cart...");
+      fetchCart();
+    }
+  }, [accessToken]);
+
   // Manual refresh function (có thể export để dùng ở component khác)
   const refreshProducts = () => {
     fetchProducts();
@@ -59,51 +78,27 @@ const ShopContextProvider = (props) => {
 
   // addToCart
   const addToCart = async (product) => {
+    console.log("➕ Adding to cart:", product);
+    
     if (!accessToken) {
       toast.error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
       navigate("/login");
       return;
     }
+    
     try {
-      let stockExceeded = false;
-      setCartItems((prevCart) => {
-        // Kiểm tra xem sản phẩm có cùng productId, size, color chưa
-        const existingIndex = prevCart.findIndex(
-          (item) =>
-            item.productId === product.productId &&  // ✅ Đổi từ item.id sang item.productId
-            item.color === product.color &&
-            item.size === product.size
-        );
-
-        if (existingIndex >= 0) {
-          // Nếu đã có => kiểm tra tồn kho trước khi tăng
-          const updatedCart = [...prevCart];
-          const newQuantity = updatedCart[existingIndex].quantity + product.quantity;
-          const maxStock = product.maxStock || 999;
-          
-          if (newQuantity > maxStock) {
-            stockExceeded = true;
-            return prevCart; // Không thay đổi giỏ hàng
-          }
-          
-          updatedCart[existingIndex].quantity = newQuantity;
-          return updatedCart;
-        } else {
-          // Nếu chưa có => thêm mới
-          return [...prevCart, { ...product, quantity: product.quantity }];
-        }
-      });
-
-      if (stockExceeded) {
-        toast.error("Số lượng vượt quá tồn kho có sẵn!");
-        return;
-      }
-
-      // Gửi về backend (nếu có)
+      // Gửi về backend trước
+      console.log("  📤 Sending to backend...");
       await cartService.addToCart(product);
+      console.log("  ✅ Backend confirmed");
+      
+      // Fetch lại cart từ backend để đồng bộ
+      console.log("  🔄 Fetching updated cart...");
+      await fetchCart();
+      
       toast.success("Đã thêm sản phẩm vào giỏ hàng!");
     } catch (error) {
-      console.error("Lỗi khi thêm vào giỏ hàng:", error);
+      console.error("  ❌ Error adding to cart:", error);
       toast.error("Có lỗi xảy ra khi thêm vào giỏ hàng");
     }
   };
@@ -210,6 +205,7 @@ const ShopContextProvider = (props) => {
     getTotalCartAmount,
     all_product,
     cartItems,
+    cartLoading, // ✅ Export loading state
     addToCart,
     removeFromCart,
     clearCart,

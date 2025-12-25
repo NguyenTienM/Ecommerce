@@ -2,16 +2,26 @@ import "./CartItems.css";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { ShopContext } from "../../Context/ShopContext";
+import Loading from "../Loading/Loading";
+
 export const CartItems = () => {
   const navigate = useNavigate();
-  const { cartItems, getTotalCartAmount, removeFromCart, updateCartQuantity, all_product } =
-    useContext(ShopContext);
+  const { 
+    cartItems, 
+    cartLoading, 
+    getTotalCartAmount, 
+    removeFromCart, 
+    updateCartQuantity, 
+    all_product 
+  } = useContext(ShopContext);
+  
   console.log("Cart Items:", cartItems);
   console.log("Cart Items Gender Debug:", cartItems.map(item => ({ 
     name: item.name, 
     gender: item.gender,
     genderType: typeof item.gender
   })));
+  
   const handleCheckout = () => {
     navigate("/checkout/delivery"); // 👉 điều hướng tới trang giao hàng
   };
@@ -19,7 +29,9 @@ export const CartItems = () => {
   return (
     <div className="cart">
       <h2>GIỎ HÀNG</h2>
-      {cartItems.length === 0 ? (
+      {cartLoading ? (
+        <Loading message="Đang tải giỏ hàng..." />
+      ) : cartItems.length === 0 ? (
         <div className="cart-empty">
           {" "}
           <p>Không có sản phẩm nào trong giỏ hàng</p>{" "}

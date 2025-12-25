@@ -17,7 +17,7 @@
 .product-image {
   width: 100%;
   overflow: hidden;
-  border-radius: var(--radius);
+
   aspect-ratio: 3 / 4; /* Enforce consistent aspect ratio */
   background-color: var(--bg-secondary);
 }
