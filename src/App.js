@@ -16,6 +16,7 @@ import AddressManagement from "./Pages/Account/AddressManagement/AddressManageme
 import ChatAi from "./Components/ChatAi/ChatAi";
 import Women from "./Pages/Category/Women/Women";
 import Kid from "./Pages/Category/Kid/Kid";
+import ChangePassword from "./Pages/Account/ChangePassword/ChangePassword";
 import CheckoutLayout from "./Pages/Checkout/CheckoutLayout/CheckoutLayout";
 import CheckoutDelivery from "./Pages/Checkout/CheckoutDelivery/CheckoutDelivery";
 import CheckoutPayment from "./Pages/Checkout/CheckoutPayment/CheckoutPayment";
@@ -48,6 +49,7 @@ function App() {
           <Route path="/user" element={<AccountLayout />}>
             <Route path="account/profile" element={<Profile />} />
             <Route path="account/address" element={<AddressManagement />} />
+            <Route path="account/password" element={<ChangePassword />} />
             <Route path="orders" element={<OrdersPage />} />
             <Route path="orders/:orderId" element={<OrderDetail />} />
           </Route>

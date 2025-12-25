@@ -1,52 +1,89 @@
-import { httpClient } from "../config/axios";
+import { httpClient } from '../config/axios';
+
+/**
+ * User API Service
+ * Handles all user-related API calls
+ */
 
 export const userService = {
-  login: async (formData) => {
-    const response = await httpClient.post("/login", formData);
-    if (response.data.success) {
-      // ✅ Chỉ lưu role vào localStorage
-      localStorage.setItem("user-role", response.data.user.role);
-      // Refresh token tự động lưu vào cookie bởi browser
-      return response.data; // ✅ Return để AuthContext xử lý
-    } else {
-      throw new Error(response.data.errors || "Login failed");
-    }
+  /**
+   * Login
+   */
+  login: async (credentials) => {
+    const response = await httpClient.post('/login', credentials);
+    return response.data;
   },
 
-  signup: async (formData) => {
-    const response = await httpClient.post("/signup", formData);
-    if (response.data.success) {
-      // ✅ Chỉ lưu role vào localStorage
-      localStorage.setItem("user-role", response.data.user.role);
-      // Refresh token tự động lưu vào cookie
-      return response.data; // ✅ Return để AuthContext xử lý
-    } else {
-      throw new Error(response.data.errors || "Signup failed");
-    }
+  /**
+   * Signup
+   */
+  signup: async (userData) => {
+    const response = await httpClient.post('/signup', userData);
+    return response.data;
   },
 
-  getMe: async (token) => {
-    const response = await httpClient.get("/me", {
-      headers: { "auth-token": token },
+  /**
+   * Logout
+   */
+  logout: async () => {
+    const response = await httpClient.post('/logout');
+    return response.data;
+  },
+
+  /**
+   * Refresh access token
+   */
+  refreshToken: async () => {
+    const response = await httpClient.post('/refresh');
+    return response.data.accessToken;
+  },
+
+  /**
+   * Get current user info
+   */
+  getMe: async () => {
+    const response = await httpClient.get('/me');
+    return response.data;
+  },
+
+  getCurrentUser: async () => {
+    const response = await httpClient.get('/me');
+    return response.data;
+  },
+
+  /**
+   * Update user profile
+   */
+  updateProfile: async (data) => {
+    const response = await httpClient.put('/profile', data);
+    return response.data;
+  },
+
+  /**
+   * Upload avatar
+   */
+  uploadAvatar: async (file) => {
+    const formData = new FormData();
+    formData.append('avatar', file);
+    
+    const response = await httpClient.put('/avatar', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
     });
     return response.data;
   },
 
-  refreshToken: async () => {
-    // ✅ Không cần gửi refresh token, cookie tự động gửi
-    const response = await httpClient.post("/refresh");
-    
-    if (response.data.success) {
-      // Access token sẽ được lưu vào memory bởi AuthContext
-      return response.data.accessToken;
-    }
-    throw new Error("Failed to refresh token");
-  },
-
-  logout: async () => {
-    // ✅ Không cần gửi refresh token, cookie tự động gửi
-    await httpClient.post("/logout");
-    localStorage.removeItem("auth-token");
-    localStorage.removeItem("user-role");
+  /**
+   * Change password
+   */
+  changePassword: async (currentPassword, newPassword) => {
+    const response = await httpClient.put('/password', {
+      currentPassword,
+      newPassword
+    });
+    return response.data;
   },
 };
+
+export default userService;

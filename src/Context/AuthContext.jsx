@@ -78,8 +78,8 @@ export const AuthContextProvider = ({ children }) => {
         const me = await userService.getMe(newAccessToken);
         setUser(me);
       } catch (error) {
-        // Không có refresh token hoặc hết hạn
-        console.log("No valid refresh token");
+        // Không có refresh token hoặc hết hạn - đây là trường hợp bình thường khi chưa login
+        // Không cần log error
       } finally {
         setLoading(false);
       }
