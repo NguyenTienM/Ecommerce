@@ -1,20 +1,23 @@
-import React from 'react'
-import './RelateProduct.css'
-import data_product from '../Assets/data'
-import {Item} from '../Item/Item'
-
-export const RelatedProducts = () => {
+import React from "react";
+import "./RelateProduct.css";
+import { Item } from "../Item/Item";
+import { useContext } from "react";
+import { ShopContext } from "../../Context/ShopContext";
+export const RelatedProducts = ({ gender }) => {
+  const { all_product } = useContext(ShopContext);
+  const related = all_product
+    .filter((item) => item.gender === gender)
+    .slice(0, 4);
+  console.log(related);
   return (
-   <div className="relatedproducts">
-     <h1>Related Products</h1>
-     <hr />
-     <div className="relatedproducts-item">
-       {
-        data_product.map((item,i)=>{
-            return <Item  key={i} id ={item.id} name = {item.name} image ={item.image} new_price ={item.new_price} old_price={item.old_price} />
-        })
-       }
-     </div>
-   </div>
-  )
-}
+    <div className="relatedproducts">
+      <h1>Sản phẩm được quan tâm</h1>
+      <hr />
+      <div className="relatedproducts-item">
+        {related.map((item, i) => {
+          return <Item product={item} key={item._id} />;
+        })}
+      </div>
+    </div>
+  );
+};

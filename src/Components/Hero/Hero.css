@@ -1,158 +1,137 @@
-.hero{
-    height: 100vh;
-    background: linear-gradient(180deg, #fde1ff,#e1ffea22 60%);
-    display: flex;
+.hero {
+  height: 90vh; /* Almost full screen but leaving space for content preview */
+  background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url("../Assets/2.jpg") no-repeat center center;
+  background-size: cover;
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: flex-start; /* Align to left */
+  padding: 0 10%; /* Responsive padding */
+  margin-bottom: 50px;
+  position: relative;
+  /* Add subtle animation if image changes */
 }
 
-.hero-left{
-    flex:1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20px;
-    padding-left: 180px;
-    line-height: 1.1;
-}
-.hero-left h2{
-    color:#090909;
-    font-size: 26px;
-    font-weight: 600;
-
+.hero-left {
+  flex: 1;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: white;
+  z-index: 2; /* Ensure text is above overlay */
 }
 
-.hero-left p{
-    color:#171717;
-    font-size: 100px;
-    font-weight: 700;
+.hero-left h2 {
+  font-size: 24px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+  color: #f3f3f3; /* Slightly off-white */
 }
+
+.hero-left p {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.1;
+  font-family: 'Playfair Display', serif;
+  margin: 0;
+  color: #ffffff;
+}
+
 .hero-hand-icon {
-    display: flex;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.hero-hand-icon img {
+  width: 60px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.hero-latest-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  width: 280px;
+  height: 60px;
+  border-radius: 30px; /* Modern rounded pill shape */
+  margin-top: 30px;
+  background: var(--primary-color);
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 65, 65, 0.4);
+}
+
+.hero-latest-btn:hover {
+  background: #e63b3b;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(255, 65, 65, 0.6);
+}
+
+.hero-latest-btn img {
+  width: 20px;
+  transition: transform 0.3s ease;
+}
+
+.hero-latest-btn:hover img {
+  transform: translateX(5px);
+}
+
+.hero-right {
+  display: none; /* Hiding right image if background is cover, OR adjust if you want a cutout image on right */
+  /* If you want a cutout image style instead of background cover, uncomment below and remove background-size cover from .hero */
+  /*
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  */
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .hero-left p {
+    font-size: 48px;
+  }
+  .hero-latest-btn {
+    width: 240px;
+    height: 50px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 70vh;
+    padding: 0 20px;
+    justify-content: center; /* Center text on mobile */
+    text-align: center;
+  }
+  
+  .hero-left {
     align-items: center;
-}
-.hero-hand-icon img{
-width: 105px;
+  }
 
-}
-
-.hero-latest-btn{
-    display: flex;
+  .hero-left p {
+    font-size: 36px;
+  }
+  
+  .hero-hand-icon {
     justify-content: center;
-    align-items: center;
-    gap: 15px;
-    width: 310px;
-    height: 70px;
-    border-radius: 75px;
-    margin-top: 30px;
-    background: #ff4141;
-    color:white;
-    font-size: 22px;
-    font-weight: 500;
-
-}
-.hero-right{
-    flex:1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
+  }
 }
 
-@media(max-width:1280px){
-    .hero-left{
-        padding-left: 100px;
-
-    }
-    .hero-left h2{
-        font-size: 22px;
-    }
-    .hero-left p{
-        font-size: 60px;
-    }
-    .hero-hand-icon img{
-      width: 80px;
-    }
-    .hero-latest-btn{
-        gap:10px;
-        width: 250px;
-        height: 60px;
-        margin-top:20px;
-        font-size:18px;
-    }
-    .hero-right img{
-        width:500px;
-    }
-}
-@media(max-width:1024px){
-    .hero-left{
-        padding-left: 80px;
-
-    }
-    .hero-left h2{
-        font-size: 20px;
-    }
-    .hero-left p{
-        font-size: 50px;
-    }
-    .hero-hand-icon img{
-      width: 65px;
-    }
-    .hero-latest-btn{
-        
-        width: 220px;
-        height: 50px;
-      
-        font-size:16px;
-    }
-    .hero-right img{
-        width:400px;
-    }
-}
-
-@media(max-width:800px){
-    .hero-left{
-        padding-left: 30px;
-
-    }
-    .hero-left h2{
-        font-size: 16px;
-    }
-    .hero-left p{
-        font-size: 40px;
-    }
-    .hero-hand-icon img{
-       width: 50px;
-    }
-    .hero-latest-btn{
-        
-        width: 175px;
-        height: 40px;
-      
-        font-size:13px;
-    }
-    .hero-right img{
-        width:300px;
-    }
-}
-
-@media(max-width:500px){
-    .hero{
-        flex-direction: column;
-    }
-    .hero-right{
-        display: none;
-    }
-    .hero-left h2{
-        font-size: 18px;
-    }
-    .hero-left p{
-        font-size: 50px ;
-    }
-    .hero-hand-icon img{
-        width: 55px;
-    }
-    .hero-latest-btn{
-        width: 200px;
-        height: 45px;
-        font-size: 14px;
-    }
+@media (max-width: 480px) {
+  .hero-left p {
+    font-size: 32px;
+  }
+  .hero {
+    height: 60vh;
+  }
 }

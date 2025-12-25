@@ -1,0 +1,36 @@
+.order-container {
+  border: 1px solid #333;
+  padding: 14px;
+  display: block;
+}
+.order-tabs {
+  display: flex;
+  justify-content: space-around;
+}
+.tab-item {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 16px;
+  list-style-type: none;
+  text-transform: uppercase;
+}
+
+.tab-item.active {
+  color: #dd2d0e;
+  font-weight: 500;
+}
+.tab-item:hover {
+  color: #dd2d0e;
+}
+.tab-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #dd2d0e;
+}
