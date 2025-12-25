@@ -1,18 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Poster from "../../../Components/Poster/Poster";
 import "./Men.css";
-import { getCategoriesByGender } from "../../../data/categoriesData";
 
 const Men = () => {
-  const categories = getCategoriesByGender("mens");
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch categories for mens from API
+    fetch("http://localhost:4000/categories?gender=mens")
+      .then((res) => res.json())
+      .then((data) => {
+        setCategories(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("❌ Error loading categories:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <div className="men-category loading">Đang tải...</div>;
+  }
 
   return (
     <div className="men-category">
       {categories.map((category) => (
         <Poster
-          key={category.id}
+          key={category._id}
           title={category.name}
-          image={category.image}
+          image={category.image || "http://localhost:4000/images/default_category.jpg"}
           link={`/mens/${category.slug}`}
         />
       ))}

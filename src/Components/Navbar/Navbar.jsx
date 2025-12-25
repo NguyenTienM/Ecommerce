@@ -17,6 +17,7 @@ export const Navbar = () => {
   const { user } = useContext(AuthContext);
   const nav = useNavigate();
   const menuRef = useRef();
+  const closeTimeoutRef = useRef(null);
 
   const dropdown_toggle = (e) => {
     menuRef.current.classList.toggle("nav-menu-visible");
@@ -24,11 +25,19 @@ export const Navbar = () => {
   };
 
   const handleMouseEnter = (type) => {
+    // Clear any pending close timeout
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
     setActiveMega(type);
   };
 
   const handleMouseLeave = () => {
-    setActiveMega(null);
+    // Add delay before closing to allow mouse to reach MegaMenu
+    closeTimeoutRef.current = setTimeout(() => {
+      setActiveMega(null);
+    }, 200); // 200ms delay
   };
 
   return (

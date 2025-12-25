@@ -1,11 +1,36 @@
-import { httpClient } from "../config/axios";
+import { httpClient } from '../config/axios';
+
+/**
+ * Product API Service
+ * Handles all product-related API calls
+ */
+
 export const productService = {
-  getNewCollections: async () => {
-    const response = await httpClient.get("/newcollections");
+  /**
+   * Get all products
+   */
+  getAllProducts: async () => {
+    const response = await httpClient.get('/allproducts');
     return response.data;
   },
-  getPopularWomen: async () => {
-    const response = await httpClient.get("/popularwomen");
+
+  /**
+   * Get product by ID
+   */
+  getProductById: async (id) => {
+    const response = await httpClient.get(`/product/${id}`);
+    return response.data;
+  },
+
+  /**
+   * Get products by category
+   */
+  getProductsByCategory: async (categorySlug, gender) => {
+    const response = await httpClient.get('/allproducts', {
+      params: { category: categorySlug, gender }
+    });
     return response.data;
   },
 };
+
+export default productService;

@@ -38,7 +38,7 @@ const CheckoutSummary = () => {
     setShowSuccessModal(false);
     navigate("/user/orders");
   };
-
+  
   console.log("Checkout Data:", checkoutData.shippingAddress);
 
   // Redirect to delivery page if no shipping address selected
@@ -69,8 +69,14 @@ const CheckoutSummary = () => {
       </div>
     );
   }
-
-  return (
+  const genderLable = {
+    male: "Nam",
+    female: "Nữ",
+    unisex: "Unisex",
+    kid: "Trẻ em",
+    
+  }
+  return ( 
     <div className="checkout-summary">
       <h1>3.Đơn hàng của bạn</h1>
       <div className="checkout-details">
@@ -108,6 +114,9 @@ const CheckoutSummary = () => {
               <div className="cart-item-top">
                 <div className="cart-item-info">
                   <h3>{item.name}</h3>
+                  <p>Kiểu: 
+                    <span> {genderLable[item.gender]}</span>
+                  </p>
                   <p>
                     Màu sắc: <span>{item.color}</span>
                   </p>
