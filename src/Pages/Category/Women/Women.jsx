@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./Women.css";
 import Poster from "../../../Components/Poster/Poster";
+import { categoryService } from "../../../services/categoryService";
 
 const Women = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:4000/categories?gender=womens")
-      .then((res) => res.json())
+    categoryService.getCategoriesByGender("womens")
       .then((data) => {
         setCategories(data);
         setLoading(false);

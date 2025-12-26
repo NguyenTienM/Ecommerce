@@ -175,6 +175,29 @@
   color: var(--text-secondary);
 }
 
+/* Loading spinner for auth state */
+.nav-auth-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 45px;
+}
+
+.nav-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--primary-color, #ff4141);
+  border-radius: 50%;
+  animation: navSpin 0.8s linear infinite;
+}
+
+@keyframes navSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .nav-dropdown {
   display: none;
   cursor: pointer;

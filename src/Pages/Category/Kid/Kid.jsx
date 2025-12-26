@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Poster from "../../../Components/Poster/Poster";
+import { categoryService } from "../../../services/categoryService";
 import "./Kid.css";
 
 const Kid = () => {
@@ -7,8 +8,7 @@ const Kid = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:4000/categories?gender=kids")
-      .then((res) => res.json())
+    categoryService.getCategoriesByGender("kids")
       .then((data) => {
         setCategories(data);
         setLoading(false);

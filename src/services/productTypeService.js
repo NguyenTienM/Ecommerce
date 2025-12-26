@@ -7,10 +7,18 @@ import { httpClient } from '../config/axios';
 
 export const productTypeService = {
   /**
+   * Get all product types
+   */
+  getAllProductTypes: async () => {
+    const response = await httpClient.get('/product-types');
+    return response.data;
+  },
+
+  /**
    * Get product types by category and gender
    */
   getProductTypes: async (categorySlug, gender) => {
-    const response = await httpClient.get('/api/product-types', {
+    const response = await httpClient.get('/product-types', {
       params: { categorySlug, gender }
     });
     return response.data;
@@ -20,7 +28,7 @@ export const productTypeService = {
    * Get product type by ID
    */
   getProductTypeById: async (id) => {
-    const response = await httpClient.get(`/api/product-types/${id}`);
+    const response = await httpClient.get(`/product-types/${id}`);
     return response.data;
   },
 };

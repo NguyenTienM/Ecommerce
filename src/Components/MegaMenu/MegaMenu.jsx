@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./MegaMenu.css";
 import { useNavigate } from "react-router-dom";
+import { categoryService } from "../../services/categoryService";
+import { productTypeService } from "../../services/productTypeService";
 
 const MegaMenu = ({ type }) => {
   const [categories, setCategories] = useState([]);
@@ -19,14 +21,12 @@ const MegaMenu = ({ type }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch categories for this gender - pass gender as query param
-        const categoriesRes = await fetch(`http://localhost:4000/categories?gender=${gender}`);
-        const categoriesData = await categoriesRes.json();
+        // Fetch categories for this gender using service
+        const categoriesData = await categoryService.getCategoriesByGender(gender);
         setCategories(categoriesData);
 
-        // Fetch product types for this gender - backend will filter by categoryId
-        const typesRes = await fetch(`http://localhost:4000/api/product-types`);
-        const typesData = await typesRes.json();
+        // Fetch product types for this gender using service
+        const typesData = await productTypeService.getAllProductTypes();
         
         if (typesData.success) {
           // Group product types by category

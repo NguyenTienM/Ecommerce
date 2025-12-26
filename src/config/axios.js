@@ -2,7 +2,7 @@ import axios from "axios";
 import { AuthContext } from "../Context/AuthContext";
 import { useContext } from "react";
 
-export const BASE_URL = "http://localhost:4000";
+export const BASE_URL = "http://localhost:4000/api/v1";
 
 export const httpClient = axios.create({
   baseURL: BASE_URL,
@@ -46,7 +46,7 @@ httpClient.interceptors.response.use(
       try {
         // ✅ Không cần gửi refresh token, cookie tự động gửi
         const response = await axios.post(
-          `${BASE_URL}/refresh`,
+          `${BASE_URL}/auth/refresh`, // ✅ Updated to new endpoint
           {},
           {
             withCredentials: true, // ✅ Gửi cookie

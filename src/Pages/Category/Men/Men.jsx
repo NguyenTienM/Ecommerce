@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Poster from "../../../Components/Poster/Poster";
+import { categoryService } from "../../../services/categoryService";
 import "./Men.css";
 
 const Men = () => {
@@ -7,9 +8,8 @@ const Men = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch categories for mens from API
-    fetch("http://localhost:4000/categories?gender=mens")
-      .then((res) => res.json())
+    // Fetch categories for mens from API using service
+    categoryService.getCategoriesByGender("mens")
       .then((data) => {
         setCategories(data);
         setLoading(false);

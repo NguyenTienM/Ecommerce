@@ -15,7 +15,7 @@ export const ShopCategory = () => {
 
   // Fetch products (with populated categoryId and productTypeId)
   useEffect(() => {
-    fetch("http://localhost:4000/allproducts")
+    fetch("http://localhost:4000/api/v1/products")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -27,7 +27,7 @@ export const ShopCategory = () => {
   // Fetch product types cho category này
   useEffect(() => {
     if (category && gender) {
-      fetch(`http://localhost:4000/api/product-types?categorySlug=${category}&gender=${gender}`)
+      fetch(`http://localhost:4000/api/v1/product-types?categorySlug=${category}&gender=${gender}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {

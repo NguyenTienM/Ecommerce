@@ -14,7 +14,7 @@ export const Navbar = () => {
   const [menu, setMenu] = useState("shop");
   const [activeMega, setActiveMega] = useState(null);
   const { getTotalCartItems } = useContext(ShopContext);
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   const nav = useNavigate();
   const menuRef = useRef();
   const closeTimeoutRef = useRef(null);
@@ -112,7 +112,11 @@ export const Navbar = () => {
           </li>
         </ul>
         <div className="nav-login-cart">
-          {user ? (
+          {loading ? (
+            <div className="nav-auth-loading">
+              <div className="nav-spinner"></div>
+            </div>
+          ) : user ? (
             <div className="nav-infor">
               <FaUserCircle />
               <span>{user.name}</span>

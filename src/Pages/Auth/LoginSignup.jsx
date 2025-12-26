@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import { toast } from "react-toastify";
+import Loading from "../../Components/Loading/Loading";
 import "./LoginSignup.css";
 
 export const LoginSignup = () => {
@@ -64,8 +65,16 @@ export const LoginSignup = () => {
   };
 
   return (
-    <div className="loginsignup-page">
-      <div className="loginsignup-container">
+    <>
+      {/* Full-page loading overlay */}
+      {loading && (
+        <div className="fullpage-loading-overlay">
+          <Loading message={state === "Login" ? "Đang đăng nhập..." : "Đang đăng ký..."} />
+        </div>
+      )}
+      
+      <div className="loginsignup-page">
+        <div className="loginsignup-container">
         {/* Left Panel - Branding */}
         <div className="loginsignup-left">
           <div className="branding-content">
@@ -227,5 +236,6 @@ export const LoginSignup = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
